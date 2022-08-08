@@ -1,11 +1,10 @@
 ---
-# In this playbook, we will be copying files locally and remotely.
+# In this playbook, we will be copying files to our remote clients
 - name: Copy Files Playbook
   hosts: all
   become: yes
   tasks:
 
-    # Copy ansibletest.txt file from home dir of employee user to remote's /tmp
     - name: Copy file1 to remote user's /tmp
       copy:
         src: /home/bob/file1
@@ -14,11 +13,10 @@
         owner: john
         group: john
 
-    # Create another copy of ansibletest.txt with more secure permissions
-    - name: Copy file1 with secure permissions
+    - name: Copy file1 with some more secure permissions
       copy:
         src: /home/bob/file1
         dst: /tmp/secure-backup-file1
         mode: u=rw,g=r
-        owner: john
-        group: root
+        owner: root
+        group: john
