@@ -1,0 +1,14 @@
+---
+- name: Ping remote clients and output a message
+  hosts: linuxservers
+  become: yes
+
+  tasks:
+    - name: Ping remote clients
+      ping:
+
+    - name: use debug module to output a message
+      debug: msg="You have pinged your machines!"
+
+
+  

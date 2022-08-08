@@ -1,0 +1,51 @@
+---
+- name: Create User and Group
+  hosts: all
+  become: yes
+  tasks:
+
+    # Add a new user "Employee" and add him to the wheel and employee groups
+    # Make his shell /bin/bash  and   make his home dir /home/employee 
+    - name: Add new user "employee"
+      user:
+        name: employee
+        groups: wheel
+        append: yes
+        shell: /bin/bash
+        home: /home/employee
+        comment: "User Account of New Employee"
+
+    # Create a new file called ansibletest.txt and give it proper ownership.
+    # Also give it 0644 permissions.
+    - name: Create ansiblestest.txt file
+      file:
+        path: /home/employee/ansibletest.txt
+        state: touch
+        owner: employee
+        group: employee
+        mode: '0644'
+    
+    # Create a directory called test in employee's home dir.
+    - name: Create test directory
+      file:
+        path: /home/employee/test
+        state: directory
+        owner: employee
+        group: employee
+        mode: '0755'
+    
+    #Create a symlink for the ansibletest.txt file
+    - name: Create symlink for ansibletest.txt
+      file:
+        src: /home/employee/ansibletest.txt
+        path: /home/employee/test/link-ansibletest.txt
+        state: link
+        owner: employee
+        group: employee
+    
+
+      
+      
+
+
+

@@ -1,0 +1,30 @@
+---
+# Use the Find Module to find files/dirs
+- name: Find Files Playbook
+  hosts: webservers
+  become: yes
+  tasks:
+
+    # Recursively find a file that ends in .txt in the /home/employee directory
+    # that is older than 5 days and has a size greater 2MB.
+    - name: Find ansibletest.txt file
+      find:
+        paths: /home/employee
+        file_type: file
+        age: 2d
+        size: 2m
+        patterns: '*.txt'
+        recurse: yes
+
+    # Same task as above, but recursively searching for a directory
+    - name: Find directory 
+      find:
+        paths: /home
+        file_type: directory
+        patterns: 'employee'
+        recurse: yes     
+
+
+        
+      
+    

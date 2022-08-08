@@ -1,0 +1,17 @@
+---
+- name: Find and Kill a the cat process
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Get PID of process from remote clients
+      ignore_errors: yes
+      shell:
+        cmd: ps -ef | grep cat | awk '{print $2}'
+      register: running_process
+
+    - name: Kill running_process
+      ignore_errors: yes
+      shell:
+        cmd: kill {{ item }}
+      with_items: "{{ running_process.stdout_lines }}"

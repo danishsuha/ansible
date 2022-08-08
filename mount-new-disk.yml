@@ -1,0 +1,35 @@
+---
+- name: Partition a new disk and mount it at /ansiblemounts
+  hosts: ec2servers
+  become: yes
+
+  tasks:
+    - name: Create Partition
+      parted:
+        name: files 
+        label: gpt
+        device: /dev/xvdc
+        number: 1
+        state: present
+        part_start: 1MiB
+        part_end: 1GiB
+
+    - name: Format partition with XFS filesystem
+      filesystem:
+        dev: /dev/xvdc1
+        fstype: xfs 
+    
+    - name: Create a mount directory
+      file:
+        path: /ansiblemounts
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+    
+    - name: Mount /dev/sdc1 to /ansiblemounts
+      mount:
+        src: /dev/sdc1
+        fstype: xfs
+        path: /ansiblemounts
+        state: mounted

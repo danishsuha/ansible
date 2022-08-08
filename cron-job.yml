@@ -1,0 +1,18 @@
+---
+- name: Create cron job to run a script every Monday-Friday at 4:30pm
+  hosts: linuxservers
+  become: yes
+
+  tasks:
+    - name: Create the cron job
+      cron:
+        name: This job will run the important.sh script on schedule
+        minute: "30"
+        hour: "16"
+        day: "*"
+        month: "*"
+        weekday: "1-5"
+        user: root
+        job: "./important.sh"
+      args:
+        chdir: /scripts/admin-scripts

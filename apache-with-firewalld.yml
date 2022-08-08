@@ -1,0 +1,39 @@
+---
+- name: Install Apache & Enable Traffic on 80/tcp
+  hosts: webservers
+  
+  tasks:
+    - name: Install httpd package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start/Enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    
+    - name: Edit index.html
+      shell: 
+        cmd: "echo "My Website" > /var/www/html/index.html"
+
+    - name: Add http to firewall
+      firewalld:
+        service: http
+        state: enabled
+        permanent: true
+
+    - name: Add port 80/tcp to firewall
+      firewalld:
+        port: 80/tcp
+        state: enabled
+        permanent: true
+
+    - name: Restart firewalld to apply new changes
+      service:
+        name: firewalld
+        state: reloaded
+    
+
+

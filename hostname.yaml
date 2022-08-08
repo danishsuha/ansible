@@ -1,0 +1,10 @@
+---
+- name: Hostname Playbook
+  hosts: all
+  become: yes 
+  tasks:
+
+    # Change the hostname of the machine
+    - name: Change hostname
+      hostname:
+        name: my_new_hostname

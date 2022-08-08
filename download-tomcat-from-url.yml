@@ -1,0 +1,25 @@
+---
+- name: Download Tomcat from tomcat.apache.org
+  hosts: javaservers
+  tasks:
+    - name: Create a Tomcat Directory
+      file:
+        path: /opt/tomcat
+        state: directory 
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Allow port 443/tcp for incoming https connections
+      firewalld:
+        port: 443/tcp
+        state: enabled
+        permanent: true
+
+    - name: Download Tomcat using URL
+      get_url:
+        url: "https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.81/bin/apache-tomcat-8.5.81.tar.gz"
+        dest: /opt/tomcat
+        mode: 0755
+        owner: root
+        group: root
