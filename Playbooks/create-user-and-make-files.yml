@@ -34,7 +34,7 @@
         group: employee
         mode: '0755'
     
-    #Create a symlink for the ansibletest.txt file
+    # Create a symlink for the ansibletest.txt file
     - name: Create symlink for ansibletest.txt
       file:
         src: /home/employee/ansibletest.txt
