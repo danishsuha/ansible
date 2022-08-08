@@ -4,8 +4,8 @@
   become: yes
   tasks:
 
-    # Add a new user "Employee" and add him to the wheel and employee groups
-    # Make his shell /bin/bash  and   make his home dir /home/employee 
+    # Add a new user "Employee" and add him to the employee group
+    # Make his shell /bin/bash and make his home dir /home/employee 
     - name: Add new user "employee"
       user:
         name: employee
