@@ -17,7 +17,7 @@
         recurse: yes
 
     # Same task as above, but recursively searching for a directory
-    - name: Find directory 
+    - name: Find directory 'employee' in /home
       find:
         paths: /home
         file_type: directory
