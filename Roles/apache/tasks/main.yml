@@ -1,0 +1,40 @@
+---
+- name: update yum packages for RedHat
+  become: yes
+  when: ansible_os_family == {{ OS[0] }}
+  shell:
+    cmd: yum update -y
+  
+- name: update apt-get packages for Ubuntu
+  become: yes
+  when: ansible_os_family == {{ OS[1] }}
+  shell:
+    cmd: apt-get update -y
+
+### We will continue the remainder of the playbook as if running on
+### RedHat. If you are using multiple OS like Ubuntu and RedHat, then 
+### you can differentaite between them with the 'when' conditional. 
+
+- name: install httpd package for RedHat
+  become: yes
+  yum:
+    name: {{ rhpkg }}
+    state: latest
+  notify:
+    - start/enable httpd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

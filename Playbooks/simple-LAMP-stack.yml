@@ -1,0 +1,74 @@
+---
+- name: Create a simple LAMP Stack
+  hosts: webservers
+  vars:
+    OS: ["RedHat","Ubuntu"]
+    
+  tasks:
+  - name: update yum packages for RedHat
+    become: yes
+    when: ansible_os_family == {{ OS[0] }}
+    shell:
+      cmd: yum update -y
+    
+  - name: update apt-get packages for Ubuntu
+    become: yes
+    when: ansible_os_family == {{ OS[1] }}
+    shell:
+      cmd: apt-get update -y
+
+  ### We will continue the remainder of the playbook as if running on
+  ### RedHat. If you are using multiple OS like Ubuntu and RedHat, then 
+  ### you can differentaite between them with the 'when' conditional. 
+
+  - name: install httpd package for RedHat
+    become: yes
+    yum:
+      name: httpd
+      state: latest
+    notify:
+      - start/enable httpd
+
+  - name: install mariadb for RedHat
+    become: yes
+    yum:
+      name: 
+        - mariadb-server
+        - mariadb
+      state: latest
+    notify:
+      - start/enable mariadb
+
+  - name: install PHP & restart httpd
+    become: yes
+    yum:
+      name:
+        - php
+        - php-mysql
+      state: latest
+    notify:
+      - restart httpd
+
+  - name: copy your index.php to /var/www/html
+    become: yes
+    copy:
+      src: /~/index.php
+      dest: /var/www/html/index.php
+
+  handlers:
+    - name: start/enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: restart httpd
+      service:
+        name: httpd
+        state: restarted
+
+    - name: start/enable mariaDB
+      service:
+        name: mariadb
+        state: started
+        enabled: yes

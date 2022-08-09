@@ -1,0 +1,7 @@
+---
+- name: Create a LAMP Stack using Ansible roles
+  hosts: webservers
+  roles:
+    - apache 
+    - mysql
+    - php

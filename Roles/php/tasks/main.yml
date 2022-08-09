@@ -1,0 +1,16 @@
+---
+- name: install PHP & restart httpd
+  become: yes
+  yum:
+    name:
+      - php
+      - php-mysql
+    state: latest
+  notify:
+    - restart httpd
+
+- name: copy index.php to /var/www/html
+  become: yes
+  copy:
+    src: /etc/ansible/roles/php/files/index.php
+    dest: /var/www/html/index.php

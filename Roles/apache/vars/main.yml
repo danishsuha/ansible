@@ -1,0 +1,4 @@
+OS: ["RedHat","Ubuntu"]
+rhpkg: httpd
+ubuntupkg: apache2
+

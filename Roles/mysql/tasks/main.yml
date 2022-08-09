@@ -1,0 +1,10 @@
+---
+- name: install mariadb for RedHat
+  become: yes
+  yum:
+    name: 
+      - mariadb-server
+      - mariadb
+    state: latest
+  notify:
+    - start/enable mariadb
