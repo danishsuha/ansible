@@ -1,0 +1,34 @@
+---
+- name: Edit file content
+  hosts: linuxservers
+  become: yes
+  vars:
+    expressions: ['^ONBOOT=','BOOTPROTO']
+
+  tasks:
+    lineinfile:
+      - name: Ensure SELinux is set to permissive
+        lineinfile:
+          path: /etc/selinux/config
+          regexp: '^SELINUX='
+          line: SELINUX=enforcing
+
+      - name: Make your network interface file boot persistent
+        lineinfile:
+          path: /etc/sysconfig/network-scripts/ifcfg-enp0s3
+          regexp: {{ expressions[0] }}
+          line: ONBOOT=yes
+      - name: Make your network interface file static
+        lineinfile:
+          path: /etc/sysconfig/network-scripts/ifcfg-enp0s3
+          regexp: {{ expressions[1] }}
+          line: BOOTPROTO=static
+
+      - name: Add john into /etc/sudoers and give him all permissions 
+        lineinfile:
+          path: /etc/sudoers
+          state: present
+          line: john ALL=(ALL) ALL 
+                         
+      
+

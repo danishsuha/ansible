@@ -22,13 +22,13 @@
       firewalld:
         service: http
         state: enabled
-        permanent: true
+        permanent: yes
 
     - name: Add port 80/tcp to firewall
       firewalld:
         port: 80/tcp
         state: enabled
-        permanent: true
+        permanent: yes
 
     - name: Restart firewalld to apply new changes
       service:

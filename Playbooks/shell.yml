@@ -1,0 +1,24 @@
+---
+- name: Invoke shell commands with ansible
+  hosts: linuxservers
+  become: yes
+  vars:
+    commands:
+      - uptime
+      - df -h
+      - free -h
+      - uname -a
+      - hostname
+      - systemctl status {{ services }}
+    services:
+      - httpd
+      - sshd
+      - nfs
+
+  tasks:
+    - name: run some commands on our remote clients
+      shell:
+        cmd: {{ commands }}
+      args:
+        chdir: /ansibledirectory
+        

@@ -1,0 +1,36 @@
+---
+- name:
+  hosts: linuxservers
+  become: yes
+  vars: 
+    - packages: [http,https,mysql,nfs]
+    - ports: [80/tcp,443/tcp,3306/tcp,2049/tcp]
+
+  tasks:
+    - name: add http, https, mysql, nfs services to your firewall
+      firewalld:
+        name: "{{ packages }}"
+        state: enabled
+        permanent: yes
+
+    - name: add ports 80,443,2049 to firewall
+      firewalld:
+        name: "{{ ports }}"
+        state: enabled
+        permanent: yes
+
+    - name: blacklist IP 192.168.1.250
+      firewalld:
+        rich_rule: rule family="ipv4" source address="192.168.1.250" reject
+        state: enabled
+        permanent: yes
+      notify:
+        - restart firewall
+
+
+  handlers:
+    - name: restart firewall
+      service:
+        name: firewalld
+        state: restarted
+      
